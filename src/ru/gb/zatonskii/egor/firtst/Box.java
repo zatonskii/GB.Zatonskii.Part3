@@ -1,47 +1,65 @@
 package ru.gb.zatonskii.egor.firtst;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Box<T extends Fruit> {
-
+    // честно говоря, не понял, как коробка может наследоваться от фруктов
+    // коробка - не съедобное, фрукт - съедобное.
+    // без наследования ничего не вышло
     private List<T> fruitList;
 
     public Box() {
         this.fruitList = new ArrayList<>();
     }
 
-    public void addFruit(T fruit) {
-        fruitList.add(fruit);
+    public Box(List<T> fruitList) {
+        this.fruitList = new ArrayList<>(fruitList);
     }
 
-    public int getWeight() {
-
-        if (fruitList.isEmpty()) {
-            return 0;
-        } else {
-            if (fruitList.get(0) instanceof Apple) {
-                return fruitList.size();
-            } else {
-                return fruitList.size() * 2;
-            }
-        }
+    public Box(T... fruitList) {
+        this.fruitList = new ArrayList<T>(Arrays.asList(fruitList));
     }
-    public void print (){
-        int counter = 1;
-        for (int i = 0; i < fruitList.size(); i++) {
-            System.out.printf("Вес %d фрукта = %.1f\n", counter, fruitList.get(i).getWeightFruit());
-            counter++;
-        }
-        System.out.println("Вес всех фруктов = " + getWeight());
+    // эти три конструктора взял из кода урока и не понимаю, что они делают.
+
+    // добавляем фрукты
+    public void addFruit(T fruitList) {
+        this.fruitList.add(fruitList);
     }
 
-    public boolean compare(Box<? extends Fruit> box) {
-        return getWeight() == box.getWeight();
+    // метод сравнивающий вес
+    public float getWeightBoxAndFruit() {
+        if (this.fruitList.size() == 0)
+            return  0.0f;
+        return this.fruitList.size() * this.fruitList.get(0).getWeightFruit();
     }
-    public boolean food(Box<T> box) {
-        fruitList.addAll(box.fruitList);
-        box.fruitList.clear();
-        return false;
+
+   // хотел написать метод, который сортирует цвета фруктов и выводит в консоль, но...
+//    public int getColourFruit() {
+//       if (this.fruitList.size() == 0)
+//           return getColourFruit();
+//       return getColourFruit();
+//    }
+
+//    public Integer colourFruit(Box<T> another) {
+//        return Collections.sort(fruitList);
+//    }
+    //...что-то пошло не так
+
+    public boolean comparisonWeight(Box<?> another) {
+        return Math.abs(getWeightBoxAndFruit() - another.getWeightBoxAndFruit()) < 0.0001f;
     }
+    // метод взял из стрима. У меня было нагромождение кода с циклами и выглядело ужасно
+
+    // Метод, который пересыпает фрукты из коробки
+    public void shiftFruits(Box<? super  T> another) {
+        if (this == another)
+            return;
+        another.fruitList.addAll(fruitList);
+        fruitList.clear();
+    }
+
+    public List<T> getFruitList() {
+        return fruitList;
+    }
+
 }

@@ -6,12 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
         String cats[] = {"Persey, ", "Max, ", "Foxy, ", "Boris, ", "Felix, ", "Vaksa, ", "Mysya, ", "Baks, "};
-        Integer weight[] = {9, 7, 1, 8, 10, 2, 5, 6};
         swapPlacesCats(cats,3, 0);
-        prototypeCats(weight);
-      ArrayToArrayList();
+        new ArrayToArrayList();
       BoxFruit();
     }
     static <C> void swapPlacesCats(C[] cats, int valueOne, int valueTwo) {
@@ -27,48 +26,40 @@ public class Main {
         System.out.println(arrList);
     }
 
-    public static void ArrayToArrayList() {
-        Integer[] values = { 1, 3, 7 };
-        List<Integer> list = new ArrayList<>(Arrays.asList(values));
-        System.out.println("Первый элемент" + list.get(0));
+    public static class ArrayToArrayList {
+        public static void replaceTwoElements(Object[] arr, int i1, int i2) {
+        Object temp = arr[i1];
+        arr[i1] = arr[i2];
+        arr[i2] = temp;
     }
 
+    public static <E> ArrayList<E> arrToList(E[] arr) {
+        ArrayList<E> result = new ArrayList<E>(arr.length);
+        for (E e : arr) {
+            result.add(e);
+        }
+        return result;
+
+    }
+}
+
     public static void BoxFruit() {
-        Apple apple0 = new Apple(1.0f);
-        Apple apple1 = new Apple(1.0f);
+        Box<Apple> appleBox = new Box<>(new Apple(1.1f,"GREEN"), new Apple(0.9f,"YELLOW"), new Apple(2.0f, "RED"));
+        Box<Orange> orangeBox = new Box<>(new Orange(1.5f, "RED"), new Orange(2.5f, "YELLOW"), new Orange(2.0f, "ORANGE"));
+        // определил для каждого фрукта разный вес - этого не было в задаче
+        // определил для каждого фрукта цвет - этого не было в задаче
 
-        Box <Apple> appleBox = new Box<>();
-        Box<Orange> orangeBox = new Box<>();
-        appleBox.compare(orangeBox);
-        appleBox.food(appleBox);
+        System.out.println(appleBox.comparisonWeight(orangeBox));
 
-        appleBox.addFruit(apple0);
-        appleBox.addFruit(apple1);
-        appleBox.addFruit(new Apple(4.0f));
+        Box<Orange> secondOrangeBox = new Box<>(new Orange(2.2f, "ORANGE"));
 
-        Box<Apple> appleBox1 = new Box<>();
-        appleBox1.addFruit(apple0);
-        appleBox1.addFruit(apple1);
-        appleBox.addFruit(new Apple(4.0f));
-
-        Box<Apple> appleBox2 = new Box<>();
-        appleBox2.addFruit(new Apple(4.0f));
-
-        Box<Apple> nullAppleBox = new Box<>();
-
-        Box<Orange> orangeBox1 = new Box<>();
-        orangeBox1.addFruit(new Orange(1.5f));
-        orangeBox1.addFruit(new Orange(3.0f));
-        orangeBox1.addFruit(new Orange(4.5f));
-
-        System.out.println("Box orange = " + orangeBox1.getWeight());
-        System.out.println("Box apple = " + appleBox1.getWeight());
-        System.out.println(appleBox.compare(orangeBox));
-
-        orangeBox.print();
-
-        appleBox2.food(nullAppleBox);
-        nullAppleBox.print();
+        System.out.println("Первая коробка с апельсинами весит: " + orangeBox.getWeightBoxAndFruit());
+        orangeBox.shiftFruits(secondOrangeBox);
+        System.out.println("Общий вес апельсинов после пересыпания: " + secondOrangeBox.getWeightBoxAndFruit());
+        System.out.println("Вес пустой коробки из под апельсинов: " + orangeBox.getWeightBoxAndFruit());
+        System.out.println();
+        // результат яблок в консоли 4.5 вместо 4.0
+        // результат апельсинов в консоли 88 вместо 8.2
     }
 }
 
